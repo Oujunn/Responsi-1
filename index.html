@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Data Mahasiswa</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"> Data Mahasiswa<span></span></div>
+<nav>
+<a class="active" data-section="form">Form Data</a>
+<a data-section="table">Daftar Mahasiswa</a>
+</nav>
+<div class="sidebar-foot">
+    <p>Total Data: <span id="dataCount">0</span></p>
+    <div class="actions">
+        <button id="importBtn" title="Impor Data (JSON)">Impor</button>
+        <button id="exportBtn" title="Ekspor Data (JSON)">Ekspor</button>
+    </div>
+</div>
+</aside>
+
+
+<main class="main">
+<header class="topbar">
+<h1>Form Pendaftaran Mahasiswa</h1>
+<div class="top-actions">
+<input id="search" placeholder="Cari nama, NIM, prodi..." />
+<button id="clearStorage">Reset Semua</button>
+</div>
+</header>
+
+
+<section id="form" class="panel active">
+<form id="mahasiswaForm" autocomplete="off">
+<div class="card">
+  <h2>Data Pribadi</h2>
+  <div class="grid">
+
+
+<label>Nama Lengkap
+<input id="nama" type="text" required />
+</label>
+
+
+<label>NIM
+<input id="nim" type="text" required pattern="\d+" />
+</label>
+
+
+<label>Jenis Kelamin
+<select id="jenisKelamin" required>
+<option value="">Pilih</option>
+<option>Laki-laki</option>
+<option>Perempuan</option>
+</select>
+</label>
+
+
+<label>Tempat Lahir
+<input id="tempatLahir" type="text" />
+</label>
+
+
+<label>Tanggal Lahir
+<input id="tanggalLahir" type="date" />
+</label>
+
+
+<label>Golongan Darah
+<select id="golonganDarah">
+<option value="">Pilih</option>
+<option>A</option>
+<option>B</option>
+<option>AB</option>
+<option>O</option>
+</select>
+</label>
+
+<label>Agama
+<select id="agama">
+<option value="">Pilih</option>
+<option>Islam</option>
+<option>Kristen</option>
+<option>Katholik</option>
+<option>Hindu</option>
+<option>Budha</option>
+<option>Konghucu</option>
+</select>
+</label>
+
+<label>Alamat
+<textarea id="alamat" rows="2"></textarea>
+</label>
+
+
+<label>No. Telepon
+<input id="telepon" type="tel" />
+</label>
+</div>
+</div>
+<div class="card">
+            <h2>Informasi Akademik</h2>
+            <div class="grid">
+              <label>Program Studi
+                <select id="prodi" required>
+                  <option value="">Pilih Program Studi</option>
+                  <option>Teknologi Informasi</option>
+                  <option>Arsitektur</option>
+                  <option>Bioteknologi</option>
+                  <option>Gizi</option>
+                  <option>Psikologi</option>
+                  <option>Akuntansi</option>
+                  <option>Manajemen</option>
+                  <option>Kebidanan</option>
+                  <option>Keperawatan</option>
+                </select>
+      </label>
+
+<label>Dosen Pembimbing
+<input id="dosen" />
+</label>
+
+
+<label>Angkatan
+<input id="angkatan" type="number" min="2000" max="2099" />
+</label>
+    </div> 
+<div class="btn-row">
+<button id="submitBtn" type="submit">Simpan Data</button>
+<button id="resetBtn" type="button" class="ghost">Bersihkan Form</button>
+</div>
+</div>
+</form>
+</section>
+
+<section id="table" class="panel">
+<div class="card">
+<h2>Daftar Mahasiswa</h2>
+<div class="table-wrap">
+<p id="emptyTableMessage" style="text-align: center; margin-top: 20px; display: none;">Belum ada data mahasiswa yang tersimpan.</p>
+<table id="mahasiswaTable">
+<thead>
+<tr>
+<th>Nama</th>
+<th>NIM</th>
+<th>Prodi</th>
+<th>Telp</th>
+<th>Angkatan</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</section>
+
+
+<footer class="footer">© 2025 Universitas Aisyiyah Yogyakarta</footer>
+</main>
+</div>
+
+<dialog id="editModal" class="modal">
+<form id="editForm" method="dialog">
+  <h3>Edit Mahasiswa</h3>
+  <input id="editIndex" type="hidden" />
+  <div class="grid two-col">
+    <label>Nama
+        <input id="editNama" required />
+    </label>
+    <label>NIM
+        <input id="editNim" required pattern="\d+" />
+    </label>
+    <label>Jenis Kelamin
+        <select id="editJenisKelamin">
+            <option>Laki-laki</option>
+            <option>Perempuan</option>
+        </select>
+    </label>
+    <label>No. Telepon
+        <input id="editTelepon" type="tel" />
+    </label>
+    <label>Program Studi
+        <select id="editProdi" required>
+            <option>Teknologi Informasi</option> 
+            <option>Arsitektur</option>
+            <option>Bioteknologi</option>
+            <option>Gizi</option>
+        </select>
+    </label>
+    <label>Dosen Pembimbing
+        <input id="editDosen" />
+    </label>
+    <label>Angkatan
+        <input id="editAngkatan" type="number" min="2000" max="2099" />
+    </label>
+</div>
+<menu>
+<button id="saveEdit" type="submit">Simpan Perubahan</button>
+    <button id="cancelEdit" type="button">Batal</button>
+  </menu>
+</form>
+</dialog>
+
+
+<dialog id="deleteModal" class="modal">
+<form method="dialog" id="deleteForm">
+    <h3>Konfirmasi Hapus</h3>
+    <p>Yakin ingin menghapus data <span id="deleteNameDisplay"></span> dengan NIM <span id="deleteNimDisplay"></span>**?</p>
+    <input id="deleteIndex" type="hidden" />
+    <menu>
+        <button id="confirmDelete" type="button">Ya, Hapus</button>
+        <button value="cancel">Batal</button>
+    </menu>
+</form>
+</dialog>
+
+<input type="file" id="fileInput" accept=".json" style="display: none;" />
+
+<script src="script.js"></script>
+</body>
+</html>
